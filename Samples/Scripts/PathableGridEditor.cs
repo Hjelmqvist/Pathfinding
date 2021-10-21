@@ -1,18 +1,21 @@
 using UnityEditor;
 using UnityEngine;
 
-[CustomEditor( typeof( PathableGrid ) )]
-public class PathableGridEditor : Editor
+namespace Hjelmqvist.AStar.Sample
 {
-    public override void OnInspectorGUI()
+    [CustomEditor( typeof( PathableGrid ) )]
+    public class PathableGridEditor : Editor
     {
-        base.OnInspectorGUI();
-
-        if (GUILayout.Button( "Create new grid" ))
+        public override void OnInspectorGUI()
         {
-            PathableGrid grid = (PathableGrid)target;
-            if (grid)
-                grid.CreateGrid();
+            base.OnInspectorGUI();
+
+            if (GUILayout.Button( "Create new grid" ))
+            {
+                PathableGrid grid = (PathableGrid)target;
+                if (grid)
+                    grid.CreateGrid();
+            }
         }
     }
 }

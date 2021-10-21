@@ -1,66 +1,68 @@
 using UnityEngine;
-using Hjelmqvist.AStar;
 
-[RequireComponent( typeof( MeshRenderer ) )]
-public class PathableTile : MonoBehaviour, IPathable
+namespace Hjelmqvist.AStar.Sample
 {
-    [SerializeField] bool _walkable = true;
-    [SerializeField] Color _selectedColor = Color.magenta;
-
-    Vector2Int _position;
-    Color _defaultColor;
-
-    public Vector2Int Position => _position;
-    public MeshRenderer Renderer { get; private set; }
-
-    static PathableTile from;
-
-    public delegate void TileClicked(PathableTile from, PathableTile to);
-    public static event TileClicked OnTileClicked;
-
-    void Awake()
+    [RequireComponent( typeof( MeshRenderer ) )]
+    public class PathableTile : MonoBehaviour, IPathable
     {
-        Renderer = GetComponent<MeshRenderer>();
-        _defaultColor = Renderer.material.color;
-    }
+        [SerializeField] bool _walkable = true;
+        [SerializeField] Color _selectedColor = Color.magenta;
 
-    public bool IsWalkable()
-    {
-        return _walkable;
-    }
+        Vector2Int _position;
+        Color _defaultColor;
 
-    public void SetPosition(Vector2Int position)
-    {
-        _position = position;
-    }
+        public Vector2Int Position => _position;
+        public MeshRenderer Renderer { get; private set; }
 
-    void OnMouseDown()
-    {
-        if (!_walkable)
-            return;
+        static PathableTile from;
 
-        if (from)
+        public delegate void TileClicked(PathableTile from, PathableTile to);
+        public static event TileClicked OnTileClicked;
+
+        void Awake()
         {
-            OnTileClicked.Invoke( from, this );
-            from = null;
-            return;
+            Renderer = GetComponent<MeshRenderer>();
+            _defaultColor = Renderer.material.color;
         }
-        from = this;
-        Renderer.material.color = _selectedColor;
-    }
 
-    void OnEnable()
-    {
-        PathableGrid.OnResetColors += PathableGrid_OnResetColors;
-    }
+        public bool IsWalkable()
+        {
+            return _walkable;
+        }
 
-    void OnDisable()
-    {
-        PathableGrid.OnResetColors -= PathableGrid_OnResetColors;
-    }
+        public void SetPosition(Vector2Int position)
+        {
+            _position = position;
+        }
 
-    private void PathableGrid_OnResetColors()
-    {
-        Renderer.material.color = _defaultColor;
+        void OnMouseDown()
+        {
+            if (!_walkable)
+                return;
+
+            if (from)
+            {
+                OnTileClicked.Invoke( from, this );
+                from = null;
+                return;
+            }
+            from = this;
+            Renderer.material.color = _selectedColor;
+        }
+
+        void OnEnable()
+        {
+            PathableGrid.OnResetColors += PathableGrid_OnResetColors;
+        }
+
+        void OnDisable()
+        {
+            PathableGrid.OnResetColors -= PathableGrid_OnResetColors;
+        }
+
+        private void PathableGrid_OnResetColors()
+        {
+            Renderer.material.color = _defaultColor;
+        }
     }
 }
