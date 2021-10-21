@@ -18,8 +18,8 @@ namespace Hjelmqvist.AStar
         public PathNode(Vector2Int position, Vector2Int startPosition, Vector2Int endPosition, PathNode parent)
         {
             _position = position;
-            _g = Vector2Int.Distance(position, startPosition);
-            _h = Vector2Int.Distance(position, endPosition);
+            _g = Vector2Int.Distance( position, startPosition );
+            _h = Vector2Int.Distance( position, endPosition );
             _parent = parent;
         }
 
@@ -34,7 +34,7 @@ namespace Hjelmqvist.AStar
             PathNode current = this;
             while (current != null)
             {
-                path.Add(current.Position);
+                path.Add( current.Position );
                 current = current.Parent;
             }
             path.Reverse();

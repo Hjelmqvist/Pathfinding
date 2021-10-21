@@ -1,7 +1,7 @@
 using UnityEngine;
 using Hjelmqvist.AStar;
 
-[RequireComponent(typeof(MeshRenderer))]
+[RequireComponent( typeof( MeshRenderer ) )]
 public class PathableTile : MonoBehaviour, IPathable
 {
     [SerializeField] bool _walkable = true;
@@ -41,7 +41,7 @@ public class PathableTile : MonoBehaviour, IPathable
 
         if (from)
         {
-            OnTileClicked.Invoke(from, this);
+            OnTileClicked.Invoke( from, this );
             from = null;
             return;
         }
