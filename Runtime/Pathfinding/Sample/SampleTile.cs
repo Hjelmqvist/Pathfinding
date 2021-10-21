@@ -3,7 +3,7 @@ using UnityEngine;
 namespace Hjelmqvist.AStar.Sample
 {
     [RequireComponent( typeof( MeshRenderer ) )]
-    public class PathableTile : MonoBehaviour, IPathable
+    public class SampleTile : MonoBehaviour, IPathable
     {
         [SerializeField] bool _walkable = true;
         [SerializeField] Color _selectedColor = Color.magenta;
@@ -14,9 +14,9 @@ namespace Hjelmqvist.AStar.Sample
         public Vector2Int Position => _position;
         public MeshRenderer Renderer { get; private set; }
 
-        static PathableTile from;
+        static SampleTile from;
 
-        public delegate void TileClicked(PathableTile from, PathableTile to);
+        public delegate void TileClicked(SampleTile from, SampleTile to);
         public static event TileClicked OnTileClicked;
 
         void Awake()
@@ -52,12 +52,12 @@ namespace Hjelmqvist.AStar.Sample
 
         void OnEnable()
         {
-            PathableGrid.OnResetColors += PathableGrid_OnResetColors;
+            SampleGrid.OnResetColors += PathableGrid_OnResetColors;
         }
 
         void OnDisable()
         {
-            PathableGrid.OnResetColors -= PathableGrid_OnResetColors;
+            SampleGrid.OnResetColors -= PathableGrid_OnResetColors;
         }
 
         private void PathableGrid_OnResetColors()

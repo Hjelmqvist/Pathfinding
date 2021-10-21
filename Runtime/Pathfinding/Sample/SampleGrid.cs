@@ -3,9 +3,9 @@ using UnityEngine;
 
 namespace Hjelmqvist.AStar.Sample
 {
-    public class PathableGrid : MonoBehaviour
+    public class SampleGrid : MonoBehaviour
     {
-        [SerializeField] PathableTile _walkable, _notWalkable;
+        [SerializeField] SampleTile _walkable, _notWalkable;
         [SerializeField] int _rows, _columns;
         [SerializeField]
         Vector2Int[] directions =
@@ -20,7 +20,7 @@ namespace Hjelmqvist.AStar.Sample
                         new Vector2Int(-1, 1)
                     };
 
-        PathableTile[,] _tiles;
+        SampleTile[,] _tiles;
         Transform _gridParent;
         const string GRID_NAME = "Grid";
 
@@ -46,12 +46,12 @@ namespace Hjelmqvist.AStar.Sample
 
             _gridParent = new GameObject( GRID_NAME ).transform;
             _gridParent.SetParent( transform );
-            _tiles = new PathableTile[_rows, _columns];
+            _tiles = new SampleTile[_rows, _columns];
             for (int x = 0; x < _rows; x++)
             {
                 for (int y = 0; y < _columns; y++)
                 {
-                    PathableTile prefab = Random.value < 0.8f ? _walkable : _notWalkable;
+                    SampleTile prefab = Random.value < 0.8f ? _walkable : _notWalkable;
                     _tiles[x, y] = Instantiate( prefab, new Vector3( x, 0, y ), Quaternion.identity, _gridParent );
                     _tiles[x, y].SetPosition( new Vector2Int( x, y ) );
                 }
@@ -80,14 +80,14 @@ namespace Hjelmqvist.AStar.Sample
 
         private void OnEnable()
         {
-            PathableTile.OnTileClicked += PathableTile_OnTileClicked;
+            SampleTile.OnTileClicked += PathableTile_OnTileClicked;
         }
         private void OnDisable()
         {
-            PathableTile.OnTileClicked -= PathableTile_OnTileClicked;
+            SampleTile.OnTileClicked -= PathableTile_OnTileClicked;
         }
 
-        private void PathableTile_OnTileClicked(PathableTile from, PathableTile to)
+        private void PathableTile_OnTileClicked(SampleTile from, SampleTile to)
         {
             OnResetColors.Invoke();
             if (Pathfinding.TryGetPath( _tiles, from.Position, to.Position, directions, out List<Vector2Int> path ))

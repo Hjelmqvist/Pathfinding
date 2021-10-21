@@ -3,8 +3,8 @@ using UnityEngine;
 
 namespace Hjelmqvist.AStar.Sample
 {
-    [CustomEditor( typeof( PathableGrid ) )]
-    public class PathableGridEditor : Editor
+    [CustomEditor( typeof( SampleGrid ) )]
+    public class SampleGridEditor : Editor
     {
         public override void OnInspectorGUI()
         {
@@ -12,7 +12,7 @@ namespace Hjelmqvist.AStar.Sample
 
             if (GUILayout.Button( "Create new grid" ))
             {
-                PathableGrid grid = (PathableGrid)target;
+                SampleGrid grid = (SampleGrid)target;
                 if (grid)
                     grid.CreateGrid();
             }
