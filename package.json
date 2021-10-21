@@ -1,0 +1,12 @@
+{
+	"name": "com.hjelmqvist.astar",
+	"version": "1.0.0",
+	"displayName": "Hjelmqvist A* Pathfinding",
+	"description": "Pathfinding using A*",
+	"unity": "2020.3",
+	"author": {
+		"name": "Mathias Hjelmqvist",
+		"email": "mathias.hjelmqvist@gmail.com",
+		"url": ""
+	}
+}
