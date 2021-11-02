@@ -64,7 +64,7 @@ namespace Hjelmqvist.Pathfinding.Sample
             {
                 Vector2Int end = new Vector2Int( _rows - 1, _columns - 1 );
 
-                if (AStar.TryGetPath( _tiles, Vector2Int.zero, end, directions, out List<Vector2Int> path ))
+                if (Pathfinding.AStar.TryGetPath( _tiles, Vector2Int.zero, end, directions, out List<Vector2Int> path ))
                 {
                     Debug.Log( "Found path" );
                     foreach (Vector2Int pos in path)
@@ -90,7 +90,7 @@ namespace Hjelmqvist.Pathfinding.Sample
         private void PathableTile_OnTileClicked(SampleTile from, SampleTile to)
         {
             OnResetColors.Invoke();
-            if (AStar.TryGetPath( _tiles, from.Position, to.Position, directions, out List<Vector2Int> path ))
+            if (Pathfinding.AStar.TryGetPath( _tiles, from.Position, to.Position, directions, out List<Vector2Int> path ))
             {
                 Debug.Log( "Found path" );
                 foreach (Vector2Int pos in path)

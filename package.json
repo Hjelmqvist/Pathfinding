@@ -1,8 +1,8 @@
 {
-	"name": "com.hjelmqvist.astar",
+	"name": "com.hjelmqvist.pathfinding",
 	"version": "1.0.0",
-	"displayName": "Hjelmqvist A* Pathfinding",
-	"description": "Pathfinding using A*",
+	"displayName": "Hjelmqvist Pathfinding",
+	"description": "Pathfinding library",
 	"unity": "2020.3",
 	"author": {
 		"name": "Mathias Hjelmqvist",
