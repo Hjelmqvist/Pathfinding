@@ -2,7 +2,7 @@ using System;
 using System.Collections.Generic;
 using UnityEngine;
 
-namespace Hjelmqvist.AStar
+namespace Hjelmqvist.Pathfinding
 {
     public class PathNode : IEquatable<PathNode>
     {

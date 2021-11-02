@@ -1,6 +1,6 @@
 using UnityEngine;
 
-namespace Hjelmqvist.AStar.Sample
+namespace Hjelmqvist.Pathfinding.Sample
 {
     [RequireComponent( typeof( MeshRenderer ) )]
     public class SampleTile : MonoBehaviour, IPathable

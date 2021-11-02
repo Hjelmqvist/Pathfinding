@@ -1,9 +1,9 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-namespace Hjelmqvist.AStar
+namespace Hjelmqvist.Pathfinding
 {
-    public static class Pathfinding
+    public static class AStar
     {
         public static bool TryGetPath(IPathable[,] grid, Vector2Int startPosition, Vector2Int endPosition, Vector2Int[] neighborDirections, out List<Vector2Int> path)
         {

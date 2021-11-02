@@ -1,7 +1,7 @@
 using UnityEditor;
 using UnityEngine;
 
-namespace Hjelmqvist.AStar.Sample
+namespace Hjelmqvist.Pathfinding.Sample
 {
     [CustomEditor( typeof( SampleGrid ) )]
     public class SampleGridEditor : Editor

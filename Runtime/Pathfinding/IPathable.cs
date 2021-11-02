@@ -1,4 +1,4 @@
-namespace Hjelmqvist.AStar
+namespace Hjelmqvist.Pathfinding
 {
     public interface IPathable
     {

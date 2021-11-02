@@ -1,7 +1,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-namespace Hjelmqvist.AStar.Sample
+namespace Hjelmqvist.Pathfinding.Sample
 {
     public class SampleGrid : MonoBehaviour
     {
@@ -64,7 +64,7 @@ namespace Hjelmqvist.AStar.Sample
             {
                 Vector2Int end = new Vector2Int( _rows - 1, _columns - 1 );
 
-                if (Pathfinding.TryGetPath( _tiles, Vector2Int.zero, end, directions, out List<Vector2Int> path ))
+                if (AStar.TryGetPath( _tiles, Vector2Int.zero, end, directions, out List<Vector2Int> path ))
                 {
                     Debug.Log( "Found path" );
                     foreach (Vector2Int pos in path)
@@ -90,7 +90,7 @@ namespace Hjelmqvist.AStar.Sample
         private void PathableTile_OnTileClicked(SampleTile from, SampleTile to)
         {
             OnResetColors.Invoke();
-            if (Pathfinding.TryGetPath( _tiles, from.Position, to.Position, directions, out List<Vector2Int> path ))
+            if (AStar.TryGetPath( _tiles, from.Position, to.Position, directions, out List<Vector2Int> path ))
             {
                 Debug.Log( "Found path" );
                 foreach (Vector2Int pos in path)
