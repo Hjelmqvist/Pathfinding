@@ -7,18 +7,6 @@ namespace Hjelmqvist.Pathfinding.Sample
     {
         [SerializeField] SampleTile _walkable, _notWalkable;
         [SerializeField] int _rows, _columns;
-        [SerializeField]
-        Vector2Int[] directions =
-                        {
-                        new Vector2Int(0, 1),
-                        new Vector2Int(1, 1),
-                        new Vector2Int(1, 0),
-                        new Vector2Int(1, -1),
-                        new Vector2Int(0, -1),
-                        new Vector2Int(-1, -1),
-                        new Vector2Int(-1, 0),
-                        new Vector2Int(-1, 1)
-                    };
 
         SampleTile[,] _tiles;
         Transform _gridParent;
@@ -31,6 +19,7 @@ namespace Hjelmqvist.Pathfinding.Sample
         {
             _gridParent = transform.Find( GRID_NAME );
             CreateGrid();
+            SetConnections();
         }
 
         public void CreateGrid()
@@ -58,13 +47,34 @@ namespace Hjelmqvist.Pathfinding.Sample
             }
         }
 
+        private void SetConnections()
+        {
+            Vector2Int[] dirs = { Vector2Int.up, Vector2Int.down, Vector2Int.left, Vector2Int.right, 
+                                  new Vector2Int(1, 1), new Vector2Int(-1, -1), new Vector2Int(1, -1), new Vector2Int(-1, 1) };
+
+            for (int x = 0; x < _rows; x++)
+            {
+                for (int y = 0; y < _columns; y++)
+                {
+                    List<IPathable> connections = new List<IPathable>();
+                    foreach (Vector2Int dir in dirs)
+                    {
+                        Vector2Int pos = _tiles[x, y].Position + dir;
+                        if (pos.x >= 0 && pos.x < _rows && pos.y >= 0 && pos.y < _columns)
+                            connections.Add( _tiles[pos.x, pos.y] );
+                    }
+                    _tiles[x, y].SetConnections( connections );
+                }
+            }
+        }
+
         void Update()
         {
             if (Input.GetKeyDown( KeyCode.Space ))
             {
                 Vector2Int end = new Vector2Int( _rows - 1, _columns - 1 );
 
-                if (Pathfinding.AStar.TryGetPath( _tiles, Vector2Int.zero, end, directions, out List<Vector2Int> path ))
+                if (Pathfinding.AStar.TryGetPath( _tiles, Vector2Int.zero, end, out List<Vector2Int> path ))
                 {
                     Debug.Log( "Found path" );
                     foreach (Vector2Int pos in path)
@@ -90,7 +100,7 @@ namespace Hjelmqvist.Pathfinding.Sample
         private void PathableTile_OnTileClicked(SampleTile from, SampleTile to)
         {
             OnResetColors.Invoke();
-            if (Pathfinding.AStar.TryGetPath( _tiles, from.Position, to.Position, directions, out List<Vector2Int> path ))
+            if (Pathfinding.AStar.TryGetPath( _tiles, from.Position, to.Position, out List<Vector2Int> path ))
             {
                 Debug.Log( "Found path" );
                 foreach (Vector2Int pos in path)

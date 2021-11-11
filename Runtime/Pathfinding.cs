@@ -7,7 +7,7 @@ namespace Hjelmqvist.Pathfinding
     {
         public static class AStar
         {
-            public static bool TryGetPath(IPathable[,] grid, Vector2Int startPosition, Vector2Int endPosition, Vector2Int[] neighborDirections, out List<Vector2Int> path)
+            public static bool TryGetPath(IPathable[,] grid, Vector2Int startPosition, Vector2Int endPosition, out List<Vector2Int> path)
             {
                 if (!IsInsideBounds( grid, startPosition ) || !IsInsideBounds( grid, endPosition ))
                 {
@@ -15,8 +15,10 @@ namespace Hjelmqvist.Pathfinding
                     return false;
                 }
 
-                PathNode startNode = new PathNode( startPosition, startPosition, endPosition, null );
-                PathNode endNode = new PathNode( endPosition, startPosition, endPosition, null );
+                IPathable start = grid[startPosition.x, startPosition.y];
+                IPathable end = grid[endPosition.x, endPosition.y];
+                PathNode startNode = new PathNode( start, startPosition, startPosition, endPosition, null );
+                PathNode endNode = new PathNode( end, endPosition, startPosition, endPosition, null );
                 List<PathNode> nodesToCheck = new List<PathNode>() { startNode };
                 List<PathNode> checkedNodes = new List<PathNode>();
 
@@ -33,7 +35,7 @@ namespace Hjelmqvist.Pathfinding
                         path = currentNode.GetPath();
                         return true;
                     }
-                    nodesToCheck.AddRange( GetNeighbors( currentNode, grid, startPosition, endPosition, neighborDirections, nodesToCheck, checkedNodes ) );
+                    nodesToCheck.AddRange( GetNeighbors( currentNode, grid, startPosition, endPosition, nodesToCheck, checkedNodes ) );
                 }
                 path = null;
                 return false;
@@ -57,13 +59,13 @@ namespace Hjelmqvist.Pathfinding
                 }
             }
 
-            private static List<PathNode> GetNeighbors(PathNode node, IPathable[,] grid, Vector2Int start, Vector2Int end, Vector2Int[] directions, List<PathNode> nodesToCheck, List<PathNode> checkedNodes)
+            private static List<PathNode> GetNeighbors(PathNode node, IPathable[,] grid, Vector2Int start, Vector2Int end, List<PathNode> nodesToCheck, List<PathNode> checkedNodes)
             {
                 List<PathNode> neighbors = new List<PathNode>();
-                foreach (Vector2Int dir in directions)
+                foreach (IPathable pathable in node.Pathable.GetConnections())
                 {
-                    Vector2Int position = node.Position + dir;
-                    PathNode newNode = new PathNode( position, start, end, node );
+                    Vector2Int position = pathable.Position;
+                    PathNode newNode = new PathNode( pathable, position, start, end, node );
 
                     if (nodesToCheck.Contains( newNode ) || checkedNodes.Contains( newNode ) ||            // If the position hasn't been checked already
                         !IsInsideBounds( grid, position ) || !grid[position.x, position.y].IsWalkable()) // Is outside bounds or not walkable

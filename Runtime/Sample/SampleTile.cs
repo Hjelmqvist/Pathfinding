@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using UnityEngine;
 
 namespace Hjelmqvist.Pathfinding.Sample
@@ -42,7 +43,7 @@ namespace Hjelmqvist.Pathfinding.Sample
 
             if (from)
             {
-                OnTileClicked.Invoke( from, this );
+                OnTileClicked?.Invoke( from, this );
                 from = null;
                 return;
             }
@@ -63,6 +64,18 @@ namespace Hjelmqvist.Pathfinding.Sample
         private void PathableGrid_OnResetColors()
         {
             Renderer.material.color = _defaultColor;
+        }
+
+        List<IPathable> connections = new List<IPathable>();
+
+        public List<IPathable> GetConnections()
+        {
+            return connections;
+        }
+
+        public void SetConnections(List<IPathable> pathables)
+        {
+            connections = pathables;
         }
     }
 }
