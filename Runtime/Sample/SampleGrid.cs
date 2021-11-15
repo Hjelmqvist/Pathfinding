@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using System.Diagnostics;
 using UnityEngine;
 
 namespace Hjelmqvist.Pathfinding.Sample
@@ -74,9 +75,9 @@ namespace Hjelmqvist.Pathfinding.Sample
             {
                 Vector2Int end = new Vector2Int( _rows - 1, _columns - 1 );
 
-                if (Pathfinding.AStar.TryGetPath( _tiles, Vector2Int.zero, end, out List<Vector2Int> path ))
+                if (Pathfinding.AStar.TryGetPath( _tiles[0, 0], _tiles[end.x, end.y], out List<Vector2Int> path ))
                 {
-                    Debug.Log( "Found path" );
+                    UnityEngine.Debug.Log( "Found path" );
                     foreach (Vector2Int pos in path)
                     {
                         if (_tiles[pos.x, pos.y].TryGetComponent( out MeshRenderer renderer ))
@@ -84,7 +85,7 @@ namespace Hjelmqvist.Pathfinding.Sample
                     }
                 }
                 else
-                    Debug.Log( "Failed to find path" );
+                    UnityEngine.Debug.Log( "Failed to find path" );
             }
         }
 
@@ -100,14 +101,19 @@ namespace Hjelmqvist.Pathfinding.Sample
         private void PathableTile_OnTileClicked(SampleTile from, SampleTile to)
         {
             OnResetColors.Invoke();
-            if (Pathfinding.AStar.TryGetPath( _tiles, from.Position, to.Position, out List<Vector2Int> path ))
+            Stopwatch watch = new Stopwatch();
+            watch.Start();
+    
+            if (Pathfinding.AStar.TryGetPath( from, to, out List<Vector2Int> path ))
             {
-                Debug.Log( "Found path" );
+                watch.Stop();
+                UnityEngine.Debug.Log( "Pathfinding time: " + (watch.ElapsedMilliseconds) );
+                UnityEngine.Debug.Log( "Found path" );
                 foreach (Vector2Int pos in path)
                     _tiles[pos.x, pos.y].Renderer.material.color = Color.blue;
             }
             else
-                Debug.Log( "Failed to find path" );
+                UnityEngine.Debug.Log( "Failed to find path" );
         }
     }
 }

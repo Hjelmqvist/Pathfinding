@@ -5,9 +5,8 @@ namespace Hjelmqvist.Pathfinding
 {
     public interface IPathable
     {
+        List<IPathable> Connections { get; }
         Vector2Int Position { get; }
         bool IsWalkable();
-        List<IPathable> GetConnections();
-        void SetConnections(List<IPathable> pathables);
     }
 }

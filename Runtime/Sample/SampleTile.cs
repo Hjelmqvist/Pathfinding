@@ -11,9 +11,12 @@ namespace Hjelmqvist.Pathfinding.Sample
 
         Vector2Int _position;
         Color _defaultColor;
+        List<IPathable> _connections = new List<IPathable>();
 
         public Vector2Int Position => _position;
         public MeshRenderer Renderer { get; private set; }
+
+        public List<IPathable> Connections { get { return _connections; } }
 
         static SampleTile from;
 
@@ -66,16 +69,9 @@ namespace Hjelmqvist.Pathfinding.Sample
             Renderer.material.color = _defaultColor;
         }
 
-        List<IPathable> connections = new List<IPathable>();
-
-        public List<IPathable> GetConnections()
-        {
-            return connections;
-        }
-
         public void SetConnections(List<IPathable> pathables)
         {
-            connections = pathables;
+            _connections = pathables;
         }
     }
 }

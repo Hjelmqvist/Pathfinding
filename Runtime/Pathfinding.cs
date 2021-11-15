@@ -7,18 +7,10 @@ namespace Hjelmqvist.Pathfinding
     {
         public static class AStar
         {
-            public static bool TryGetPath(IPathable[,] grid, Vector2Int startPosition, Vector2Int endPosition, out List<Vector2Int> path)
+            public static bool TryGetPath(IPathable start, IPathable end, out List<Vector2Int> path)
             {
-                if (!IsInsideBounds( grid, startPosition ) || !IsInsideBounds( grid, endPosition ))
-                {
-                    path = null;
-                    return false;
-                }
-
-                IPathable start = grid[startPosition.x, startPosition.y];
-                IPathable end = grid[endPosition.x, endPosition.y];
-                PathNode startNode = new PathNode( start, startPosition, startPosition, endPosition, null );
-                PathNode endNode = new PathNode( end, endPosition, startPosition, endPosition, null );
+                PathNode startNode = new PathNode( start, start.Position, end.Position, null );
+                PathNode endNode = new PathNode( end, start.Position, end.Position, null );
                 List<PathNode> nodesToCheck = new List<PathNode>() { startNode };
                 List<PathNode> checkedNodes = new List<PathNode>();
 
@@ -35,16 +27,10 @@ namespace Hjelmqvist.Pathfinding
                         path = currentNode.GetPath();
                         return true;
                     }
-                    nodesToCheck.AddRange( GetNeighbors( currentNode, grid, startPosition, endPosition, nodesToCheck, checkedNodes ) );
+                    nodesToCheck.AddRange( GetNeighbors( currentNode, start.Position, end.Position, nodesToCheck, checkedNodes ) );
                 }
                 path = null;
                 return false;
-            }
-
-            private static bool IsInsideBounds<T>(T[,] grid, Vector2Int position)
-            {
-                return position.x >= 0 && position.x < grid.GetLength( 0 ) &&
-                       position.y >= 0 && position.y < grid.GetLength( 1 );
             }
 
             private static void GetNodeWithLowestFCost(List<PathNode> nodesToCheck, ref PathNode currentNode, ref int currentIndex)
@@ -59,18 +45,15 @@ namespace Hjelmqvist.Pathfinding
                 }
             }
 
-            private static List<PathNode> GetNeighbors(PathNode node, IPathable[,] grid, Vector2Int start, Vector2Int end, List<PathNode> nodesToCheck, List<PathNode> checkedNodes)
+            private static List<PathNode> GetNeighbors(PathNode node, Vector2Int start, Vector2Int end, List<PathNode> nodesToCheck, List<PathNode> checkedNodes)
             {
                 List<PathNode> neighbors = new List<PathNode>();
-                foreach (IPathable pathable in node.Pathable.GetConnections())
+                foreach (IPathable pathable in node.Pathable.Connections)
                 {
-                    Vector2Int position = pathable.Position;
-                    PathNode newNode = new PathNode( pathable, position, start, end, node );
+                    PathNode newNode = new PathNode( pathable, start, end, node );
 
-                    if (nodesToCheck.Contains( newNode ) || checkedNodes.Contains( newNode ) ||            // If the position hasn't been checked already
-                        !IsInsideBounds( grid, position ) || !grid[position.x, position.y].IsWalkable()) // Is outside bounds or not walkable
+                    if (nodesToCheck.Contains( newNode ) || checkedNodes.Contains( newNode ) || !pathable.IsWalkable())
                         continue;
-
                     neighbors.Add( newNode );
                 }
                 return neighbors;
